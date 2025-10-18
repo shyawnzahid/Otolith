@@ -4,15 +4,16 @@ import numpy as np
 
 from PIL import Image
 from absl import app, flags
-from sam2.sam2.sam2_image_predictor import SAM2ImagePredictor
+from dotenv import load_dotenv, find_dotenv
+from sam2.sam2_image_predictor import SAM2ImagePredictor
 
 flags.DEFINE_string('device', 'cpu', 'Whether or not to use GPU (cuda)')
-flags.DEFINE_string('base_directory', '/home/mzahid/Otolith', 'Project base directory')
 flags.DEFINE_string('output_directory', 'background_masks', 'Output directory for the SAM2 background mask predictions')
-flags.DEFINE_string('img_path', '/home/mzahid/Otolith/data/OA/1.png', 'Which image to predict a mask for')
+flags.DEFINE_string('img_path', 'data/OA/1.png', 'Which image to predict a mask for')
 flags.DEFINE_list('prompt_locations', ['240-480-1'], 'Pixel location(s) in h-w-v format of the prompt to SAM2, where (h,w) is the pixel and v is the binary valued label (0 - background or 1 - foreground) assigned to the prompt. For multiple prompts, use comma separated h-w-v values.')
 
 FLAGS = flags.FLAGS
+load_dotenv(find_dotenv())
 
 def get_bg_mask(predictor, img, points, labels):
 	with torch.inference_mode(), torch.autocast('cpu', dtype=torch.bfloat16):
@@ -32,13 +33,14 @@ def get_bg_mask(predictor, img, points, labels):
 	return mask
 
 def main(argv):
-	output_directory = f'{FLAGS.base_directory}/{FLAGS.output_directory}'
+	base_directory = os.environ['BASE_DIRECTORY']
+	output_directory = f'{base_directory}/{FLAGS.output_directory}'
 	try:
 		os.makedirs(output_directory)
 	except:
 		pass
 
-	img = Image.open(FLAGS.img_path)
+	img = Image.open(f'{base_directory}/{FLAGS.img_path}')
 	img = np.array(img.convert('RGB'))
 	height, width, _ = img.shape
 	
