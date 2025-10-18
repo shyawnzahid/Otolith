@@ -4,4 +4,4 @@ saved_models/*
 .DS_Store
 __pycache__/
 .venv
-data/*
+data
