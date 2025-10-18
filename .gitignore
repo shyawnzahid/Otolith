@@ -1,7 +1,7 @@
-./sam2
-./saved_models/*
+sam2
+saved_models/*
 .vscode/
 .DS_Store
 __pycache__/
 .venv
-./data/*
+data/*
