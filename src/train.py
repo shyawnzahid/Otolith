@@ -3,7 +3,7 @@ import time
 import torch
 
 from tempfile import TemporaryDirectory
-from src.utils import Metric, BestEpoch, denormalize, update_running_metrics, calculate_epoch_metrics, update_best_epoch_metrics
+from utils import Metric, BestEpoch, denormalize, update_running_metrics, calculate_epoch_metrics, update_best_epoch_metrics
 
 def train_model(model, criterion, optimizer, scheduler, fe_epochs, ft_epochs, fe_colder_lr, ft_layers, ft_learning_rates, early_stopping, dataloaders, dataset_sizes, device, writer, age_normalization, model_type):
     since = time.time()

@@ -9,13 +9,13 @@ numpy.random.seed(42)
 random.seed(42)
 
 from absl import app, flags
-from src.train import train_model
+from train import train_model
 from torch.utils.data import DataLoader
 from dotenv import load_dotenv, find_dotenv
-from src.models.OtolithViT import OtolithViT
+from models.OtolithViT import OtolithViT
 from torch.utils.tensorboard import SummaryWriter
-from src.models.OtolithResNet import OtolithResNet
-from src.utils import write_best_metrics_plot, save_models, make_datasets
+from models.OtolithResNet import OtolithResNet
+from utils import write_best_metrics_plot, save_models, make_datasets
 
 # Miscellaneous.
 flags.DEFINE_enum('device', 'cuda', ['cuda', 'cpu'], 'Which device to use') 
@@ -59,6 +59,8 @@ flags.DEFINE_integer('oversample_threshold', 10, 'Maximum frequency for oversamp
 FLAGS = flags.FLAGS
 
 load_dotenv(find_dotenv())
+
+exit()
 
 def main(argv):
     base_directory = os.environ['BASE_DIRECTORY']

@@ -25,7 +25,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Run the [setup.sh](./setup.sh) script to set up an environment variable `BASE_DIRECTORY` containing the absolute file path of the `Otolith` directory. This will create a file `Otolith/.env`.
+Run the [setup.sh](./setup.sh) script to set up an environment variable `BASE_DIRECTORY` containing the absolute file path of the `.` directory. This will create a file `./.env`.
 
 ```shell
 ./setup.sh
@@ -45,17 +45,17 @@ git clone https://huggingface.co/datasets/shyawnzahid/data
 git clone https://huggingface.co/shyawnzahid/saved_models
 ```
 
-These commands will create and populate new directories `Otolith/data` and `Otolith/saved_models` with the appropriate files.
+These commands will create and populate new directories `./data` and `./saved_models` with the appropriate files.
 
 ### SAM 2
 
-The `remove_background.py` script included in the project code requires installation of the [SAM 2](https://github.com/facebookresearch/sam2) repository. Do not follow the installation instructions in the SAM 2 repository's `README.md`, as they are not necessary for running the `remove_background.py` script. It only requires that the repository is cloned into the folder `Otolith/sam2`. Run the following command to do this.
+The `remove_background.py` script included in the project code requires installation of the [SAM 2](https://github.com/facebookresearch/sam2) repository. Do not follow the installation instructions in the SAM 2 repository's `README.md`, as they are not necessary for running the `remove_background.py` script. It only requires that the repository is cloned into the folder `./sam2`. Run the following command to do this.
 
 ```shell
 git clone https://github.com/facebookresearch/sam2.git
 ```
 
-Then move the `remove_background.py` script into the `Otolith/sam2` folder.
+Then move the `remove_background.py` script into the `./sam2` folder.
 
 ```shell
 mv ./remove_background.py ./sam2/remove_background.py
@@ -63,13 +63,28 @@ mv ./remove_background.py ./sam2/remove_background.py
 
 ## Code Structure
 
-### `Otolith/src`
+### `./src`
 
-### `Otolith/data`
+This directory contains the main code used to train the aging models. It includes:
 
-### `Otolith/saved_models`
+- [`src/models`](./src/models): Contains classes that inherit from `torch.nn.Module` for the [OtolithResNet](./src/models/OtolithResNet.py) and [OtolithViT](./src/models/OtolithViT.py) model architectures.
+- [`src/dataset.py`](./src/dataset.py): A `torch.utils.data.Dataset` class to construct a `torch.Tensor` dataset from the images in OA.
+- [`src/train.py` ](./src/train.py): The training loop to train the aging models.
+- [`src/main.py`](./src/main.py): The driver code to initiate the training process and set model hyperparameters using `absl.flags`. Flags can be set for a training run using the following structure:
 
-### `Otolith/saved_labels`
+```shell
+python main.py --flag-name=<flag-value>
+```
+
+- [`src/utils.py`](./src/utils.py): Various utility functions used by other files.
+
+### `./data`
+
+This directory contains the images in the OtolithAges dataset.
+
+### `./saved_models`
+
+### `./saved_labels`
 
 This directory contains the [`OA_labels.pkl`](./saved_labels/OA_labels.pkl) file. It can be loaded into a `python` `dict`.
 
@@ -78,10 +93,10 @@ with open(label_dir, 'rb') as f:
         ages = pickle.load(f)
 ```
 
-It contains the age labels used during training for the images in `Otolith/data/OA`. In general, `ages[x]` will contain the age label for the image `data/OA/x.png`.
+It contains the age labels used during training for the images in `./data/OA`. In general, `ages[x]` will contain the age label for the image `./data/OA/x.png`.
 
-### `Otolith/saved_model_predictions`
+### `./saved_model_predictions`
 
 The files [`res_clf.pkl`](./saved_model_predictions/res_clf.pkl), [`res_reg.pkl`](./saved_model_predictions/res_reg.pkl), [`vit_clf.pkl`](./saved_model_predictions/vit_clf.pkl), [`vit_clf.pkl`](./saved_model_predictions/vit_reg.pkl) in this directory are all formatted similar to [`OA_labels.pkl`](./saved_labels/OA_labels.pkl), and contain the model predictions for the ResNet classification, ResNet regression, ViT classification, and ViT regression models, respectively.
 
-### [`Otolith/sam2/remove_background.py`](./Otolith/sam2/remove_background.py)
+### [`./sam2/remove_background.py`](./sam2/remove_background.py)

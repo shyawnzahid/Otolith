@@ -7,7 +7,7 @@ import torchvision
 from PIL import Image
 from matplotlib import pyplot as plt
 from torcheval.metrics import R2Score
-from src.dataset import OtolithAgesDataset
+from dataset import OtolithAgesDataset
 from sklearn.model_selection import StratifiedKFold
 
 # Data structure for storing metrics for an epoch.
