@@ -60,8 +60,6 @@ FLAGS = flags.FLAGS
 
 load_dotenv(find_dotenv())
 
-exit()
-
 def main(argv):
     base_directory = os.environ['BASE_DIRECTORY']
     device = torch.device(FLAGS.device)
@@ -365,6 +363,6 @@ def main(argv):
 
     writer.flush()
     writer.close()
-    
+
 if __name__ == '__main__':
     app.run(main)
